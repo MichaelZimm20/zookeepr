@@ -52,6 +52,14 @@ function filterByQuery(query, animalsArray) {
 }
 
 
+// function findById() returns a single animal object
+function findById(id, animalsArray) {
+const result = animalsArray.filter(animal => animal.id === id)[0];
+return result;
+}
+
+
+
 //add the route for animals 
 //get method requires two arguments 
 //first, is string that describes the route the client will have to fetch form
@@ -67,6 +75,16 @@ app.get('/api/animals', (req, res) =>{
     res.json(results);
 });
 
+
+// GET route for animals 
+app.get('/api/animals/:id', (req, res) => {
+    const result = findById(req.params.id, animals);
+    if (result) {
+        res.json(result);
+    } else {
+        res.send(404);
+    }
+});
 
 //express to listen
 app.listen(PORT, () => {
