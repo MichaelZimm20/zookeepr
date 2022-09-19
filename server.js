@@ -1,14 +1,18 @@
 const express = require('express');
-const PORT = process.env.PORT || 3001;
-const app = express();
-//parse incoming string or array data 
-app.use(express.urlencoded({ extended: true }));
-//parse incoming JSON DATA
-app.use(express.json());
 //requests for animals
 const { animals } = require('./data/animals');
 const fs = require('fs');
 const path = require('path');
+
+const PORT = process.env.PORT || 3001;
+const app = express();
+
+//parse incoming string or array data 
+app.use(express.urlencoded({ extended: true }));
+//parse incoming JSON DATA
+app.use(express.json());
+app.use(express.static('public'));//middleware // provided a file path to "public" folder, then instructed the server to make these files static resources. all files can be accessed without having a specific server endpoint.
+
 
 
 
@@ -88,7 +92,7 @@ function validateAnimal(animal) {
     if (!animal.diet || typeof animal.diet !== 'string') {
         return false;
     }
-    if (!animal.personalityTraits || !Array.isArray(personalityTraits)) {
+    if (!animal.personalityTraits || !Array.isArray(animal.personalityTraits)) {
         return false;
     }
     return true;
@@ -136,6 +140,17 @@ app.post('/api/animals', (req, res) => {
 });
 
 
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
+})
+
+app.get('/animals', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/animals.html'));
+});
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
+});
 
 //express to listen
 app.listen(PORT, () => {
