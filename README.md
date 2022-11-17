@@ -18,7 +18,7 @@
 
 
    ## Usage 
-  Used to a note taker for the end-user. 
+  
   * Firstly, open the terminal 
   
   * To test the functions "npm run test"
